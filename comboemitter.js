@@ -3,7 +3,7 @@
  * Fireworks.Emitter, sound etc...
 */
 Fireworks.ComboEmitter	= function(){
-}
+} 
 
 /**
  * Start the emitter
