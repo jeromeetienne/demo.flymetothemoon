@@ -2,7 +2,9 @@ Fireworks.ComboEmitter.Flamethrower	= function(opts){
 	this._container	= new THREE.Object3D();
 	this._emitterJet= null;	
 	this._onReady	= opts.onReady	|| function(comboEmitter){};
-	this._webaudio	= opts.webaudio	|| new WebAudio();
+	if( WebAudio.isAvailable ){
+		this._webaudio	= opts.webaudio	|| new WebAudio();
+	}
 	this._baseSound	= null;
 	this._sound	= null;
 	
@@ -59,7 +61,7 @@ Fireworks.ComboEmitter.Flamethrower.prototype.ungracefullStop	= function(){
 */
 Fireworks.ComboEmitter.Flamethrower.prototype.isReady	= function(){
 	// test if the sound has been loaded
-	if( !this._baseSound.isPlayable() )	return false;
+	if( WebAudio.isAvailable && !this._baseSound.isPlayable() )	return false;
 	// test the spritesheet has been loaded
 	if( !this._emitterJet )			return false;
 	// if all previous tests passed, it is ready
@@ -274,6 +276,9 @@ Fireworks.ComboEmitter.Flamethrower.prototype._flamejetDtor	= function(){
 
 Fireworks.ComboEmitter.Flamethrower.prototype._soundCtor	= function()
 {
+	// if WebAudio isnt available, return now
+	if( WebAudio.isAvailable === false )	return;
+
 	// create a sound 
 	this._baseSound	= this._webaudio.createSound().loop(true);	
 	// load the sound
@@ -285,12 +290,18 @@ Fireworks.ComboEmitter.Flamethrower.prototype._soundCtor	= function()
 
 Fireworks.ComboEmitter.Flamethrower.prototype._soundDtor	= function()
 {
+	// if WebAudio isnt available, return now
+	if( WebAudio.isAvailable === false )	return;
+
 	this._sound	&& this._sound.stop();
 	this._baseSound.destroy();
 }
 
 Fireworks.ComboEmitter.Flamethrower.prototype._soundSetIntensity= function(newIntensity, oldIntensity)
 {
+	// if WebAudio isnt available, return now
+	if( WebAudio.isAvailable === false )	return;
+
 	//console.log('isPlayable', this._baseSound.isPlayable())
 	// if sound isnt yet playable (like not loaded), return now
 	if( this._baseSound.isPlayable() === false )	return;

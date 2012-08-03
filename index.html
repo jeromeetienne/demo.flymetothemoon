@@ -35,12 +35,13 @@ Fly Me To The Moon -
 	world.tCamera().position.z	= -30;
 
 	// enable webaudio
-	world.enableWebAudio();
+	WebAudio.isAvailable && world.enableWebAudio();
 	
-	
-	tQuery.createSound().loop(true).load('sounds/flymetothemoon.m4a', function(sound){
-		sound.volume(4).play();
-	});
+	if( WebAudio.isAvailable ){
+		tQuery.createSound().loop(true).load('sounds/flymetothemoon.m4a', function(sound){
+			sound.volume(4).play();
+		});		
+	}
 
 	//world.getCameraControls().rangeY	*= 2;
 
@@ -90,7 +91,7 @@ Fly Me To The Moon -
 	container.add( flamethrower.object3D() )
 
 	// make the sound follow this._container
-	flamethrower.sound().follow(container, world);
+	WebAudio.isAvailable && flamethrower.sound().follow(container, world);
 	// make the object3d scale follow container one
 	flamethrower.object3D().scale	= container.get(0).scale;
 
